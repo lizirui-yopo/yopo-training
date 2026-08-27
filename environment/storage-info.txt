@@ -1,0 +1,26 @@
+NAME          SIZE TYPE FSTYPE   MOUNTPOINTS                         MODEL
+loop0        63.8M loop squashfs /snap/core20/2866                   
+loop1           4K loop squashfs /snap/bare/5                        
+loop2          74M loop squashfs /snap/core22/2292                   
+loop3        66.8M loop squashfs /snap/core24/1643                   
+loop4       251.7M loop squashfs /snap/firefox/7766                  
+loop5       261.1M loop squashfs /snap/firefox/8803                  
+loop6        18.5M loop squashfs /snap/firmware-updater/210          
+loop7        16.5M loop squashfs /snap/firmware-updater/226          
+loop8       531.4M loop squashfs /snap/gnome-42-2204/247             
+loop9       614.5M loop squashfs /snap/gnome-46-2404/164             
+loop10        402M loop squashfs /snap/mesa-2404/1839                
+loop11       48.1M loop squashfs /snap/snapd/25935                   
+loop12       91.7M loop squashfs /snap/gtk-common-themes/1535        
+loop13       10.8M loop squashfs /snap/snap-store/1270               
+loop14       50.1M loop squashfs /snap/snapd/27710                   
+loop15        576K loop squashfs /snap/snapd-desktop-integration/343 
+loop16        828K loop squashfs /snap/snapd-desktop-integration/391 
+nvme0n1     476.9G disk                                              HFS512GEM9X174N
+├─nvme0n1p1   450M part vfat     /boot/efi                           
+├─nvme0n1p2    16M part                                              
+├─nvme0n1p3 346.9G part ntfs                                         
+├─nvme0n1p4   1.4G part ntfs                                         
+├─nvme0n1p5    28G part ntfs                                         
+├─nvme0n1p6   260M part vfat                                         
+└─nvme0n1p7   100G part ext4     /                                   
