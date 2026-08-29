@@ -54,4 +54,11 @@ Linux 基础操作练习保存在：
 
 ```bash
 nvidia-smi
+```
 
+
+## 第二阶段：YOPO 环境搭建与系统运行
+
+第二阶段完成 YOPO 环境配置、Controller/Simulator 编译、预训练模型运行、RViz 目标点设置以及至少三次自主避障实验。
+
+详细实验记录与提交材料见：[phase2/README.md](phase2/README.md)

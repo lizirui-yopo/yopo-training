@@ -1,0 +1,45 @@
+digraph YOPO {
+    graph [rankdir=TB, nodesep=0.45, ranksep=0.55];
+    node [shape=box, style="rounded", fontname="DejaVu Sans", fontsize=12];
+    edge [fontname="DejaVu Sans", fontsize=10];
+
+    A [label="ros_env"];
+    B [label="Controller\n动力学仿真"];
+    C [label="Simulator\n随机地图 + CUDA 传感器仿真"];
+    D [label="深度图 / 点云 ROS Topic"];
+
+    E [label="yopo_gpu"];
+    F [label="加载 YOPO 预训练模型\nepoch50.pth"];
+    G [label="YOPO Net Node Ready"];
+
+    H [label="启动 RViz\nyopo.rviz"];
+    I [label="2D Nav Goal\n设置目标点"];
+    J [label="YOPO 接收 New Goal"];
+    K [label="YOPO 实时轨迹规划与避障"];
+    L [label="Controller 执行控制指令"];
+    M [label="无人机运动"];
+    N [label="到达目标 Arrive"];
+    O [label="重复设置目标\n完成至少三次自主避障"];
+
+    A -> B;
+    B -> C;
+    C -> D;
+
+    E -> F;
+    D -> F;
+    B -> F;
+
+    F -> G;
+    G -> H;
+    C -> H;
+    B -> H;
+
+    H -> I;
+    I -> J;
+    J -> K;
+    K -> L;
+    L -> M;
+    M -> C;
+    M -> N;
+    N -> O;
+}
