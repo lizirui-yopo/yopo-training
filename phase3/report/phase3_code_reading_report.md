@@ -190,7 +190,67 @@ Controller 同时通过 `odom_callback()` 从 odometry 中获得无人机当前�
 Simulator → odometry / depth image → YOPO → 候选轨迹预测与选择 → 五次多项式轨迹 → `PositionCommand` → SO3 Controller → `SO3Command` → Simulator → 状态反馈
 
 
-## 6. 当前理解的问题
+## 6. YOPO 训练流程与 Loss 理解
+
+进一步阅读 `train_yopo.py`、`yopo_trainer.py`、`yopo_dataset.py` 以及 loss 相关代码后，对 YOPO 的训练流程有了进一步理解。
+
+### 6.1 训练主流程
+
+训练入口位于 `train_yopo.py`。程序创建 `YopoTrainer`，并调用训练函数开始多轮 epoch 训练。
+
+`YopoTrainer` 使用 `YOPODataset` 和 `DataLoader` 组织训练集与验证集。每个训练样本主要包括：
+
+- 深度图 `depth`
+- 无人机位置 `position`
+- 姿态旋转矩阵 `rotation`
+- 状态输入 `obs_b`
+- 地图编号 `map_id`
+
+其中状态输入由机体系下的速度、加速度和目标方向组成，共 9 维：
+
+`obs_b = [velocity(3), acceleration(3), goal_direction(3)]`
+
+网络前向传播得到预测终端状态和候选轨迹评分。训练器随后计算轨迹代价和评分损失，并通过：
+
+`loss.backward()`
+
+计算梯度，再使用 AdamW 优化器执行：
+
+`optimizer.step()`
+
+更新网络参数。
+
+因此训练主流程可以概括为：
+
+`YOPODataset → DataLoader → YOPO Network → endstate_pred / score_pred → Loss → backward → AdamW → 参数更新`
+
+### 6.2 轨迹损失组成
+
+YOPO 的轨迹代价主要由以下几部分组成：
+
+1. **Smoothness Loss**
+
+   通过轨迹的 jerk 和 acceleration 等高阶运动量评价轨迹平滑程度。过大的 jerk 或加速度会产生更高的代价。
+
+2. **Safety Loss**
+
+   利用场景的 SDF 距离场查询轨迹采样点与障碍物的距离，并使用指数型距离代价对靠近障碍物或进入障碍物内部的轨迹给予较大惩罚，从而鼓励网络产生更安全的轨迹。
+
+3. **Guidance Loss**
+
+   比较轨迹方向与目标方向。程序计算轨迹在目标方向上的投影，同时计算垂直于目标方向的偏离距离，使轨迹尽量向目标方向前进，同时保留一定的横向避障空间。
+
+4. **Acceleration Cost**
+
+   对过大的加速度进行惩罚，使生成轨迹满足更合理的动力学运动要求。
+
+这些代价共同构成候选轨迹的 trajectory loss，并与网络输出的 score loss 一起参与训练。
+
+因此目前对 YOPO 训练过程的理解可以表示为：
+
+`深度图 + 状态 → YOPO → 候选终端状态与评分 → 构造候选轨迹 → 平滑/安全/目标/加速度代价 → 总 Loss → 反向传播 → 更新网络参数`
+
+## 7. 当前理解的问题
 
 通过本阶段的代码阅读，目前已经初步理解 YOPO 网络输入输出、候选轨迹选择、五次多项式轨迹生成以及 YOPO 与 Controller 之间的基本数据传递关系。
 

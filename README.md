@@ -62,3 +62,48 @@ nvidia-smi
 第二阶段完成 YOPO 环境配置、Controller/Simulator 编译、预训练模型运行、RViz 目标点设置以及至少三次自主避障实验。
 
 详细实验记录与提交材料见：[phase2/README.md](phase2/README.md)
+
+## Phase 3：YOPO 论文阅读与代码理解
+
+第三阶段已完成 YOPO 整体结构、网络推理流程、Motion Primitive、轨迹生成以及 YOPO、Controller 和 Simulator 数据传递关系的代码阅读与整理。
+
+### 已完成内容
+
+- 梳理 YOPO 系统整体结构
+- 分析 YOPO 网络输入与输出
+- 确认深度图网络输入尺寸为 `160 × 96`
+- 理解状态信息与深度图进入网络的基本流程
+- 阅读 Motion Primitive 的生成方式
+- 理解候选轨迹的选择过程
+- 阅读五次多项式轨迹 `Poly5Solver` 的生成方式
+- 梳理 YOPO → `PositionCommand` → SO3 Controller → `SO3Command` → Simulator 的控制数据链路
+
+### 第三阶段成果
+
+第三阶段材料保存在：
+
+`phase3/`
+
+主要包括：
+
+- `phase3/diagrams/`：系统结构图、数据流图、网络输入输出图等
+- `phase3/notes/`：代码阅读及数据流笔记
+- `phase3/report/phase3_code_reading_report.md`：第三阶段代码阅读报告
+- `phase3/tables/phase3_core_files.md`：核心代码文件说明表
+- `phase3/tables/phase3_ros_topics.md`：ROS Topic 整理
+
+第三阶段主要提交 Commit：
+
+`4fbd705 - Complete phase 3 YOPO code reading`
+
+### 当前仍需进一步理解
+
+- `score_pred` 的具体评价指标及训练标签生成方式
+- `endstate_pred` 各维度与实际终端状态的具体对应关系
+- YOPO、Controller、Simulator 实际运行时的 ROS Topic 实时数据流
+- Motion Primitive 参数对轨迹和避障效果的影响
+
+### 下一步计划
+
+进入 Phase 4 基础运行与对比实验，在不同场景和不同飞行速度下运行 YOPO，并记录成功率、碰撞情况、飞行时间和典型轨迹等实验结果。
+
