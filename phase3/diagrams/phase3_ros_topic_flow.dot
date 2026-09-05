@@ -1,0 +1,21 @@
+digraph ROS_Topic_Flow {
+    rankdir=LR;
+    node [shape=box];
+
+    odom [label="/sim/odom\n里程计/状态"];
+    depth [label="/depth_image\n深度图"];
+    goal [label="/move_base_simple/goal\n目标点"];
+
+    yopo [label="YOPO 规划模块"];
+
+    ctrl [label="/so3_control/pos_cmd\n规划/控制信息"];
+
+    controller [label="Controller\n控制模块"];
+
+    odom -> yopo [label="订阅"];
+    depth -> yopo [label="订阅"];
+    goal -> yopo [label="订阅"];
+
+    yopo -> ctrl [label="发布"];
+    ctrl -> controller;
+}

@@ -1,0 +1,19 @@
+digraph YOPO_Network_IO {
+    rankdir=LR;
+
+    node [shape=box];
+
+    depth [label="深度图输入\ndepth_input\n160 × 96"];
+    state [label="状态信息输入\nobs_input\n速度 + 加速度 + 目标方向等"];
+
+    network [label="YOPO 网络\nself.policy(depth_input, obs_input)"];
+
+    endstate [label="终端状态预测\nendstate_pred"];
+    score [label="候选结果评分\nscore_pred"];
+
+    depth -> network;
+    state -> network;
+
+    network -> endstate;
+    network -> score;
+}

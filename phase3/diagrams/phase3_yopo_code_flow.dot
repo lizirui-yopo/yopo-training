@@ -1,0 +1,20 @@
+digraph YOPO_Code_Flow {
+    rankdir=TB;
+
+    node [shape=box];
+
+    ros [label="ROS 输入\n里程计 + 深度图像 + 目标点"];
+    preprocess [label="输入预处理\n状态处理 + 深度图像处理"];
+    yopo [label="YOPO 网络推理\nself.policy(depth_input, obs_input)"];
+    prediction [label="网络预测输出\nendstate_pred + score_pred"];
+    transform [label="坐标系转换"];
+    trajectory [label="轨迹生成、选择与可视化"];
+    control [label="控制消息处理"];
+
+    ros -> preprocess;
+    preprocess -> yopo;
+    yopo -> prediction;
+    prediction -> transform;
+    transform -> trajectory;
+    trajectory -> control;
+}

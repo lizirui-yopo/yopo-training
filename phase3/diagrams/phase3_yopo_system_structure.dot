@@ -1,0 +1,15 @@
+digraph YOPO_System {
+    rankdir=LR;
+
+    node [shape=box];
+
+    simulator [label="Simulator 仿真与传感器\n深度图 + 里程计/状态"];
+    yopo [label="YOPO 规划模块\n深度图 + 状态 + 目标点\n生成轨迹/控制信息"];
+    controller [label="Controller 控制模块\n接收规划结果\n生成无人机控制命令"];
+    uav [label="无人机/四旋翼\n执行控制并更新状态"];
+
+    simulator -> yopo [label="depth + odom"];
+    yopo -> controller [label="规划/控制信息"];
+    controller -> uav [label="控制命令"];
+    uav -> simulator [label="状态反馈"];
+}
